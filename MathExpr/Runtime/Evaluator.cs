@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using MathExpr.Analyzers;
 using MathExpr.Syntax;
 
@@ -28,14 +29,14 @@ public class Evaluator
                 var left = EvalExpression(b.Left);
                 var right = EvalExpression(b.Right);
 
-                switch (expression.Type)
+                return b.Type switch
                 {
-                    case ExpressionType.Add:
-                        return left + right;
-                    
-                    case ExpressionType.Multiply:
-                        return left * right;
-                }
+                    ExpressionType.Add => left + right,
+                    ExpressionType.Subtract => left - right,
+                    ExpressionType.Multiply => left * right,
+                    ExpressionType.Divide => left / right,
+                    _ => throw new ArgumentOutOfRangeException()
+                };
 
                 break;
             }
