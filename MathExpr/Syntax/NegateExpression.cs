@@ -4,7 +4,7 @@ public class NegateExpression : Expression
 {
     public Expression? Expression { get; }
 
-    public NegateExpression(Expression? expression) : base(ExpressionType.Negate)
+    public NegateExpression(Expression? expression)
     {
         Expression = expression;
     }

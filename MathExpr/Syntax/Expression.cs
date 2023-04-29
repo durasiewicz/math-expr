@@ -1,11 +1,10 @@
+using System.Linq.Expressions;
+
 namespace MathExpr.Syntax;
 
 public class Expression
 {
-    public ExpressionType Type { get; }
-
-    protected Expression(ExpressionType type)
+    protected Expression()
     {
-        Type = type;
     }
 }

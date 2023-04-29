@@ -26,9 +26,9 @@ public class Parser
             var rightNode = Expression();
             result = new BinaryExpression(tokenType switch
             {
-                TokenType.Plus => ExpressionType.Add,
-                TokenType.Minus => ExpressionType.Subtract,
-                TokenType.Equals => ExpressionType.Assign,
+                TokenType.Plus => BinaryExpression.BinaryExpressionType.Add,
+                TokenType.Minus => BinaryExpression.BinaryExpressionType.Subtract,
+                TokenType.Equals => BinaryExpression.BinaryExpressionType.Assign,
                 _ => throw new ArgumentOutOfRangeException()
             }, result, rightNode);
         }
@@ -47,8 +47,8 @@ public class Parser
             var rightNode = Term();
             result = new BinaryExpression(tokenType switch
             {
-                TokenType.Asterisk => ExpressionType.Multiply,
-                TokenType.Slash => ExpressionType.Divide,
+                TokenType.Asterisk => BinaryExpression.BinaryExpressionType.Multiply,
+                TokenType.Slash => BinaryExpression.BinaryExpressionType.Divide,
                 _ => throw new ArgumentOutOfRangeException()
             }, result, rightNode);
         }

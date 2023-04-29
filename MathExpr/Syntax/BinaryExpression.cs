@@ -2,14 +2,23 @@ namespace MathExpr.Syntax;
 
 public class BinaryExpression : Expression
 {
+    public BinaryExpressionType Type { get; }
     public Expression? Left { get; }
     public Expression? Right { get; }
-    private readonly ExpressionType _type;
-
-    public BinaryExpression(ExpressionType type, Expression? left, Expression? right) : base(type)
+    
+    public enum BinaryExpressionType
     {
+        Add,
+        Subtract,
+        Divide,
+        Multiply,
+        Assign,
+    }
+
+    public BinaryExpression(BinaryExpressionType type, Expression? left, Expression? right)
+    {
+        Type = type;
         Left = left;
         Right = right;
-        _type = type;
     }
 }

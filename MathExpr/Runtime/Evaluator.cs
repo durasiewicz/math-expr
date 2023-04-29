@@ -13,32 +13,32 @@ public class Evaluator
         ["pow"] = new Pow()
     };
 
-    public object Eval(string expression)
+    public object? Eval(string? expression)
     {
+        if (string.IsNullOrEmpty(expression))
+        {
+            return null;
+        }
+        
         var tokenCollections = _lexer.Lex(expression);
 
-        object result = null;
+        object? result = null;
         
         foreach (var tokenCollection in tokenCollections)
         {
             var ast = _parser.Parse(tokenCollection);
-            result = EvalExpression(ast);
+            result = EvalExpression(ast ?? throw new InvalidOperationException());
 
             if (result is string str && str.All(char.IsLetter))
             {
-                if (!_variables.ContainsKey(str))
-                {
-                    throw new Exception($"Undefined variable '{str}'.");
-                }
-                
-                result = _variables[str];
+                result = ReadValue(result);
             }
         }
 
         return result;
     }
 
-    private object EvalExpression(Expression expression)
+    private object? EvalExpression(Expression expression)
     {
         switch (expression)
         {
@@ -55,13 +55,18 @@ public class Evaluator
                 return EvalBinaryExpression(binaryExpression);
         }
 
-        return 0;
+        throw new InvalidOperationException($"Expression of type '{expression.GetType()}' is not supported.");
     }
 
     private object EvalFunctionCallExpression(FunctionCallExpression functionCallExpression)
     {
         var name = functionCallExpression.Name?.Trim()?.ToLower();
 
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new InvalidOperationException("Function name is required.");
+        }
+        
         if (!_functions.TryGetValue(name, out var function))
         {
             throw new Exception($"Unknown function '{name}'.");
@@ -82,10 +87,10 @@ public class Evaluator
 
     private object EvalBinaryExpression(BinaryExpression binaryExpression)
     {
-        var left = EvalExpression(binaryExpression.Left);
-        var right = EvalExpression(binaryExpression.Right);
+        var left = EvalExpression(binaryExpression.Left ?? throw new InvalidOperationException("left == null"));
+        var right = EvalExpression(binaryExpression.Right ?? throw new InvalidOperationException("right == null"));
 
-        if (binaryExpression.Type == ExpressionType.Assign)
+        if (binaryExpression.Type == BinaryExpression.BinaryExpressionType.Assign)
         {
             var variableName = ReadString(left);
             var value = ReadValue(right);
@@ -98,10 +103,10 @@ public class Evaluator
 
         return binaryExpression.Type switch
         {
-            ExpressionType.Add => leftValue + rightValue,
-            ExpressionType.Subtract => leftValue - rightValue,
-            ExpressionType.Multiply => leftValue * rightValue,
-            ExpressionType.Divide => leftValue / rightValue,
+            BinaryExpression.BinaryExpressionType.Add => leftValue + rightValue,
+            BinaryExpression.BinaryExpressionType.Subtract => leftValue - rightValue,
+            BinaryExpression.BinaryExpressionType.Multiply => leftValue * rightValue,
+            BinaryExpression.BinaryExpressionType.Divide => leftValue / rightValue,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

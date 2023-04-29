@@ -4,7 +4,7 @@ public class ConstantExpression : Expression
 {
     public object? Value { get; }
 
-    public ConstantExpression(object? value) : base(ExpressionType.Constant)
+    public ConstantExpression(object? value)
     {
         Value = value;
     }
