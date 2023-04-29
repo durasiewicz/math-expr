@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathExpr", "MathExpr\MathExpr.csproj", "{DB96D90B-2C5B-47CE-B649-0DF049DEB8EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathExpr.Console", "MathExpr.Console\MathExpr.Console.csproj", "{073D26F5-7DF7-4108-96B3-8231E9E2881E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB96D90B-2C5B-47CE-B649-0DF049DEB8EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB96D90B-2C5B-47CE-B649-0DF049DEB8EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB96D90B-2C5B-47CE-B649-0DF049DEB8EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB96D90B-2C5B-47CE-B649-0DF049DEB8EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{073D26F5-7DF7-4108-96B3-8231E9E2881E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{073D26F5-7DF7-4108-96B3-8231E9E2881E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{073D26F5-7DF7-4108-96B3-8231E9E2881E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{073D26F5-7DF7-4108-96B3-8231E9E2881E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
