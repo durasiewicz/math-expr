@@ -67,7 +67,7 @@ public class Evaluator
                 return constantExpression.Value;
             
             case NegateExpression negateExpression:
-                return -ReadDecimal(EvalExpression(negateExpression.Expression));
+                return -ReadValue(EvalExpression(negateExpression.Expression));
 
             case FunctionCallExpression functionCallExpression:
                 return EvalFunctionCallExpression(functionCallExpression);
