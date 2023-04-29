@@ -3,8 +3,9 @@ using MathExpr.Runtime;
 
 
 var expr = """
-    a = 2
-    pow(a,3)
+    a = (1 + 1)
+    b = 3
+    pow(a,b)
     """;
 
 var eval = new Evaluator();

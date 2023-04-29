@@ -122,6 +122,11 @@ public class Evaluator
     
     private decimal ReadDecimal(object obj)
     {
+        if (obj is decimal var)
+        {
+            return var;
+        }
+        
         if (!decimal.TryParse(ReadString(obj), out var result))
         {
             throw new Exception("Decimal expteceted.");
