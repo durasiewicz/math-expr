@@ -58,6 +58,10 @@ public class Lexer
                     yield return Token.FromWindow(window, TokenType.Slash);
                     break;
 
+                case '%':
+                    yield return Token.FromWindow(window, TokenType.Percent);
+                    break;
+                
                 default:
                 {
                     if (char.IsLetter(window.PeekChar()))

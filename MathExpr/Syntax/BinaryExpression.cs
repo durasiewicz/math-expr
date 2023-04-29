@@ -13,6 +13,7 @@ public class BinaryExpression : Expression
         Divide,
         Multiply,
         Assign,
+        Remainder
     }
 
     public BinaryExpression(BinaryExpressionType type, Expression? left, Expression? right)

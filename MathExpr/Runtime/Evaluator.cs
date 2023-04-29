@@ -128,6 +128,7 @@ public class Evaluator
             BinaryExpression.BinaryExpressionType.Subtract => leftValue - rightValue,
             BinaryExpression.BinaryExpressionType.Multiply => leftValue * rightValue,
             BinaryExpression.BinaryExpressionType.Divide => leftValue / rightValue,
+            BinaryExpression.BinaryExpressionType.Remainder => leftValue % rightValue,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

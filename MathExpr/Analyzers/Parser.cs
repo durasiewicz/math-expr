@@ -40,7 +40,9 @@ public class Parser
     {
         var result = Factor();
 
-        if (result != null && _tokenCollection.Current.Type is TokenType.Asterisk or TokenType.Slash)
+        if (result != null && _tokenCollection.Current.Type is TokenType.Asterisk 
+                or TokenType.Slash
+                or TokenType.Percent)
         {
             var tokenType = _tokenCollection.Current.Type;
             _tokenCollection.MoveNext();
@@ -49,6 +51,7 @@ public class Parser
             {
                 TokenType.Asterisk => BinaryExpression.BinaryExpressionType.Multiply,
                 TokenType.Slash => BinaryExpression.BinaryExpressionType.Divide,
+                TokenType.Percent => BinaryExpression.BinaryExpressionType.Remainder,
                 _ => throw new ArgumentOutOfRangeException()
             }, result, rightNode);
         }
@@ -67,7 +70,8 @@ public class Parser
                     or TokenType.Plus
                     or TokenType.Minus
                     or TokenType.Asterisk
-                    or TokenType.Slash:
+                    or TokenType.Slash
+                    or TokenType.Percent:
             {
                 _tokenCollection.MoveNext();
                 result = Expression();
@@ -86,7 +90,7 @@ public class Parser
             {
                 _tokenCollection.MoveNext();
                 result = Expression();
-                
+
                 if (_tokenCollection.Current.Type != TokenType.CloseRoundBracket)
                 {
                     throw new Exception("Expected )");
@@ -94,7 +98,7 @@ public class Parser
 
                 break;
             }
-            
+
             case TokenType.EndOfCode:
                 return result;
         }
@@ -124,7 +128,7 @@ public class Parser
         {
             throw new Exception("Function name is required");
         }
-        
+
         return new FunctionCallExpression(functionName, parameters.ToArray());
     }
 }

@@ -66,5 +66,10 @@ public enum TokenType
     /// <summary>
     /// ,
     /// </summary>
-    Comma
+    Comma,
+    
+    /// <summary>
+    /// %
+    /// </summary>
+    Percent
 }
