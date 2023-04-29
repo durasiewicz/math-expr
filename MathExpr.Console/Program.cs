@@ -1,2 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using MathExpr.Analyzers;
+using MathExpr.Runtime;
+
+
+var expr = """
+    2 + 2 * 2
+    """;
+
+var eval = new Evaluator();
+Console.WriteLine(eval.Eval(expr));
+Console.ReadLine();
