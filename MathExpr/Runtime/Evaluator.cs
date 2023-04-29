@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using MathExpr.Analyzers;
 using MathExpr.Syntax;
 
@@ -8,6 +7,11 @@ public class Evaluator
 {
     private readonly Lexer _lexer = new();
     private readonly Parser _parser = new();
+
+    private readonly Dictionary<string, Function> _functions = new()
+    {
+        ["pow"] = new Pow()
+    };
 
     public object Eval(string expression)
     {
@@ -21,15 +25,32 @@ public class Evaluator
     {
         switch (expression)
         {
-            case ConstantExpression c:
-                return decimal.Parse((string)c.Value);
+            case ConstantExpression constantExpression:
+                return decimal.Parse((string)constantExpression.Value);
 
-            case BinaryExpression b:
+            case FunctionCallExpression functionCallExpression:
             {
-                var left = EvalExpression(b.Left);
-                var right = EvalExpression(b.Right);
+                var name = functionCallExpression.Name?.Trim()?.ToLower();
 
-                return b.Type switch
+                if (!_functions.TryGetValue(name, out var function))
+                {
+                    throw new Exception($"Unknown function '{name}'.");
+                }
+
+                if (function.ParametersCount != functionCallExpression.Params.Length)
+                {
+                    throw new Exception("Invalid parameters count.");
+                }
+                
+                return function.Call(functionCallExpression.Params.Select(EvalExpression).ToArray());
+            }
+            
+            case BinaryExpression binaryExpression:
+            {
+                var left = EvalExpression(binaryExpression.Left);
+                var right = EvalExpression(binaryExpression.Right);
+
+                return binaryExpression.Type switch
                 {
                     ExpressionType.Add => left + right,
                     ExpressionType.Subtract => left - right,
@@ -37,8 +58,6 @@ public class Evaluator
                     ExpressionType.Divide => left / right,
                     _ => throw new ArgumentOutOfRangeException()
                 };
-
-                break;
             }
         }
 
