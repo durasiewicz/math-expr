@@ -1,2 +1,0 @@
-namespace MathExpr.Syntax;
-
