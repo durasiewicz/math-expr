@@ -60,7 +60,15 @@ public class Parser
     {
         Expression result = null;
 
-        if (_tokenCollection.Current.Type is TokenType.Number or TokenType.Identifier)
+        if (_tokenCollection.Current.Type is TokenType.Minus &&
+            _tokenCollection.Previous is not null &&
+            (_tokenCollection.Previous.Type is TokenType.Equals or TokenType.Plus or TokenType.Minus or TokenType.Asterisk or TokenType.Slash))
+        {
+            _tokenCollection.MoveNext();
+            result = Expression();
+            return new NegateExpression(result);
+        }
+        else if (_tokenCollection.Current.Type is TokenType.Number or TokenType.Identifier)
         {
             // Function call
             if (_tokenCollection.Next?.Type == TokenType.OpenRoundBracket)
@@ -73,7 +81,7 @@ public class Parser
                     _tokenCollection.MoveNext();
                     parameters.Add(Expression());
                 } while (_tokenCollection.Current.Type == TokenType.Comma);
-               
+
                 if (_tokenCollection.Current.Type != TokenType.CloseRoundBracket)
                 {
                     throw new Exception("Expected )");

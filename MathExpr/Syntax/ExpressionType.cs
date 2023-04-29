@@ -8,5 +8,6 @@ public enum ExpressionType
     Divide,
     Multiply,
     Assign,
-    FunctionCall
+    FunctionCall,
+    Negate
 }

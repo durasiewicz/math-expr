@@ -34,77 +34,86 @@ public class Evaluator
         {
             case ConstantExpression constantExpression:
                 return constantExpression.Value;
+            
+            case NegateExpression negateExpression:
+                return -ReadDecimal(EvalExpression(negateExpression.Expression));
 
             case FunctionCallExpression functionCallExpression:
-            {
-                var name = functionCallExpression.Name?.Trim()?.ToLower();
-
-                if (!_functions.TryGetValue(name, out var function))
-                {
-                    throw new Exception($"Unknown function '{name}'.");
-                }
-
-                if (function.ParametersCount != functionCallExpression.Params.Length)
-                {
-                    throw new Exception("Invalid parameters count.");
-                }
-
-                var @params = new List<decimal>();
-
-                foreach (var paramExpression in functionCallExpression.Params)
-                {
-                    var expressionResult = EvalExpression(paramExpression);
-
-                    if (IsIdentifier(expressionResult))
-                    {
-                        var variableName = ReadString(expressionResult);
-
-                        if (!_variables.ContainsKey(variableName))
-                        {
-                            throw new Exception($"Undefined variable '{variableName}'.");
-                        }
-                        
-                        @params.Add(_variables[variableName]);
-                    }
-                    else
-                    {
-                        @params.Add(ReadDecimal(expressionResult));
-                    }
-                }
-                
-                return function.Call(@params.ToArray());
-            }
+                return EvalFunctionCallExpression(functionCallExpression);
             
             case BinaryExpression binaryExpression:
-            {
-                var left = EvalExpression(binaryExpression.Left);
-                var right = EvalExpression(binaryExpression.Right);
-
-                if (binaryExpression.Type == ExpressionType.Assign)
-                {
-                    var leftValue = ReadString(left);
-                    var rightValue = ReadDecimal(right);
-                    _variables[leftValue] = rightValue;
-                    return rightValue;
-                }
-                else
-                {
-                    var leftValue = ReadDecimal(left);
-                    var rightValue = ReadDecimal(right);
-                    
-                    return binaryExpression.Type switch
-                    {
-                        ExpressionType.Add => leftValue + rightValue,
-                        ExpressionType.Subtract => leftValue - rightValue,
-                        ExpressionType.Multiply => leftValue * rightValue,
-                        ExpressionType.Divide => leftValue / rightValue,
-                        _ => throw new ArgumentOutOfRangeException()
-                    };
-                }
-            }
+                return EvalBinaryExpression(binaryExpression);
         }
 
         return 0;
+    }
+
+    private object EvalFunctionCallExpression(FunctionCallExpression functionCallExpression)
+    {
+        var name = functionCallExpression.Name?.Trim()?.ToLower();
+
+        if (!_functions.TryGetValue(name, out var function))
+        {
+            throw new Exception($"Unknown function '{name}'.");
+        }
+
+        if (function.ParametersCount != functionCallExpression.Params.Length)
+        {
+            throw new Exception("Invalid parameters count.");
+        }
+
+        var @params = new List<decimal>();
+
+        foreach (var paramExpression in functionCallExpression.Params)
+        {
+            var expressionResult = EvalExpression(paramExpression);
+
+            if (IsIdentifier(expressionResult))
+            {
+                var variableName = ReadString(expressionResult);
+
+                if (!_variables.ContainsKey(variableName))
+                {
+                    throw new Exception($"Undefined variable '{variableName}'.");
+                }
+
+                @params.Add(_variables[variableName]);
+            }
+            else
+            {
+                @params.Add(ReadDecimal(expressionResult));
+            }
+        }
+
+        return function.Call(@params.ToArray());
+    }
+
+    private object EvalBinaryExpression(BinaryExpression binaryExpression)
+    {
+        var left = EvalExpression(binaryExpression.Left);
+        var right = EvalExpression(binaryExpression.Right);
+
+        if (binaryExpression.Type == ExpressionType.Assign)
+        {
+            var leftValue = ReadString(left);
+            var rightValue = ReadDecimal(right);
+            _variables[leftValue] = rightValue;
+            return rightValue;
+        }
+        else
+        {
+            var leftValue = ReadDecimal(left);
+            var rightValue = ReadDecimal(right);
+
+            return binaryExpression.Type switch
+            {
+                ExpressionType.Add => leftValue + rightValue,
+                ExpressionType.Subtract => leftValue - rightValue,
+                ExpressionType.Multiply => leftValue * rightValue,
+                ExpressionType.Divide => leftValue / rightValue,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
     }
 
     private bool IsIdentifier(object obj) =>

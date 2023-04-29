@@ -19,6 +19,16 @@ public class TokenCollection
     }
 
     public Token Current => _tokens[_cursor];
+
+    public Token? Previous
+    {
+        get
+        {
+            var previousCursorPosition = _cursor - 1;
+            return previousCursorPosition >= 0 ? _tokens[previousCursorPosition] : null;
+        }
+    }
+    
     public Token? Next 
     {
         get

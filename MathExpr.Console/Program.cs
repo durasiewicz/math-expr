@@ -1,13 +1,15 @@
-﻿using MathExpr.Analyzers;
+﻿using System.Runtime.CompilerServices;
+using MathExpr.Analyzers;
 using MathExpr.Runtime;
 
 
 var expr = """
-    a = (1 + 1)
-    b = 3
-    pow(a,b)
+    a = -(2 + 2)
     """;
 
 var eval = new Evaluator();
 Console.WriteLine(eval.Eval(expr));
 Console.ReadLine();
+
+int a = 0;
+var b = -(1 + 2);

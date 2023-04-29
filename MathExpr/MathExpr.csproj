@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Syntax\" />
     <Folder Include="Vendor\" />
   </ItemGroup>
 
