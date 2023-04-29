@@ -7,7 +7,7 @@ Build-in functions:
 
 | FunctionName(arg, ...) |
 | --- |
-| pow(x) |
+| pow(x, y) |
 | sqrt(x) |
 | exp(x) |
 | log10(x) |
@@ -21,7 +21,7 @@ Build-in functions:
 | abs(x) |
 | asin(x) |
 | atan(x) |
-| atan2(x) |
+| atan2(x, y) |
 | acos(x) |
 
 Variables are also supported:
