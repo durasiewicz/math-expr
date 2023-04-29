@@ -1,5 +1,10 @@
-﻿using MathExpr.Runtime;
+﻿using System.Globalization;
+using MathExpr.Runtime;
 using static System.Console;
+
+var ci = new CultureInfo("en-US");
+Thread.CurrentThread.CurrentCulture = ci;
+Thread.CurrentThread.CurrentUICulture = ci;
 
 const string exitCommand = "/q"; 
 

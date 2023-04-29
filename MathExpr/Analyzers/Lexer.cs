@@ -46,10 +46,6 @@ public class Lexer
                     yield return Token.FromWindow(window, TokenType.Comma);
                     break;
                 
-                case '.':
-                    yield return Token.FromWindow(window, TokenType.Dot);
-                    break;
-
                 case '>':
                 {
                     if (window.PeekNext(out var nextChar) && nextChar is '=')
@@ -171,7 +167,7 @@ public class Lexer
 
         do
         {
-            if (!window.PeekNext(out var nextCharacter) || !char.IsDigit(nextCharacter))
+            if (!window.PeekNext(out var nextCharacter) || !char.IsDigit(nextCharacter) && nextCharacter != '.')
             {
                 return new Token(window.Line, startPosition, TokenType.Number, window.ToString(startPosition));
             }

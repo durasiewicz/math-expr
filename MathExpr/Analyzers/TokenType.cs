@@ -74,11 +74,6 @@ public enum TokenType
     LessThanEquals,
     
     /// <summary>
-    /// !=
-    /// </summary>
-    ExclamationEquals,
-    
-    /// <summary>
     /// *
     /// </summary>
     Asterisk,
@@ -126,10 +121,5 @@ public enum TokenType
     /// <summary>
     /// ,
     /// </summary>
-    Comma,
-    
-    /// <summary>
-    /// .
-    /// </summary>
-    Dot
+    Comma
 }

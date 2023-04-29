@@ -26,6 +26,11 @@ public class Evaluator
 
             if (result is string str && str.All(char.IsLetter))
             {
+                if (!_variables.ContainsKey(str))
+                {
+                    throw new Exception($"Undefined variable '{str}'.");
+                }
+                
                 result = _variables[str];
             }
         }
@@ -67,30 +72,12 @@ public class Evaluator
             throw new Exception("Invalid parameters count.");
         }
 
-        var @params = new List<decimal>();
+        var @params = functionCallExpression.Params
+            .Select(EvalExpression)
+            .Select(ReadValue)
+            .ToArray();
 
-        foreach (var paramExpression in functionCallExpression.Params)
-        {
-            var expressionResult = EvalExpression(paramExpression);
-
-            if (IsIdentifier(expressionResult))
-            {
-                var variableName = ReadString(expressionResult);
-
-                if (!_variables.ContainsKey(variableName))
-                {
-                    throw new Exception($"Undefined variable '{variableName}'.");
-                }
-
-                @params.Add(_variables[variableName]);
-            }
-            else
-            {
-                @params.Add(ReadDecimal(expressionResult));
-            }
-        }
-
-        return function.Call(@params.ToArray());
+        return function.Call(@params);
     }
 
     private object EvalBinaryExpression(BinaryExpression binaryExpression)
@@ -100,38 +87,58 @@ public class Evaluator
 
         if (binaryExpression.Type == ExpressionType.Assign)
         {
-            var leftValue = ReadString(left);
-            var rightValue = ReadDecimal(right);
-            _variables[leftValue] = rightValue;
-            return rightValue;
+            var variableName = ReadString(left);
+            var value = ReadValue(right);
+            _variables[variableName] = value;
+            return value;
         }
-        else
-        {
-            var leftValue = ReadDecimal(left);
-            var rightValue = ReadDecimal(right);
 
-            return binaryExpression.Type switch
-            {
-                ExpressionType.Add => leftValue + rightValue,
-                ExpressionType.Subtract => leftValue - rightValue,
-                ExpressionType.Multiply => leftValue * rightValue,
-                ExpressionType.Divide => leftValue / rightValue,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-        }
+        var leftValue = ReadValue(left);
+        var rightValue = ReadValue(right);
+
+        return binaryExpression.Type switch
+        {
+            ExpressionType.Add => leftValue + rightValue,
+            ExpressionType.Subtract => leftValue - rightValue,
+            ExpressionType.Multiply => leftValue * rightValue,
+            ExpressionType.Divide => leftValue / rightValue,
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
 
+    private decimal ReadValue(object? obj)
+    {
+        if (obj is null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        if (!IsIdentifier(obj))
+        {
+            return ReadDecimal(obj);
+        }
+        
+        var variableName = ReadString(obj);
+
+        if (!_variables.ContainsKey(variableName))
+        {
+            throw new Exception($"Undefined variable '{variableName}'.");
+        }
+
+        return _variables[variableName];
+    }
+    
     private bool IsIdentifier(object obj) =>
         obj is string str && str.All(char.IsLetter);
     
     private string ReadString(object obj)
     {
-        if (obj is not string)
+        if (obj is not string str)
         {
             throw new Exception("String expected.");
         }
 
-        return (string)obj;
+        return str;
     }
     
     private decimal ReadDecimal(object obj)
@@ -143,7 +150,7 @@ public class Evaluator
         
         if (!decimal.TryParse(ReadString(obj), out var result))
         {
-            throw new Exception("Decimal expteceted.");
+            throw new Exception("Decimal expected.");
         }
 
         return result;
