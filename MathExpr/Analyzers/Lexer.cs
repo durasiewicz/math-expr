@@ -26,14 +26,6 @@ public class Lexer
                     yield return Token.FromWindow(window, TokenType.CloseRoundBracket);
                     break;
 
-                case '{':
-                    yield return Token.FromWindow(window, TokenType.OpenCurlyBracket);
-                    break;
-
-                case '}':
-                    yield return Token.FromWindow(window, TokenType.CloseCurlyBracket);
-                    break;
-
                 case ';':
                     yield return Token.FromWindow(window, TokenType.Semicolon);
                     break;
@@ -46,43 +38,8 @@ public class Lexer
                     yield return Token.FromWindow(window, TokenType.Comma);
                     break;
                 
-                case '>':
-                {
-                    if (window.PeekNext(out var nextChar) && nextChar is '=')
-                    {
-                        yield return Token.FromWindow(window, TokenType.GreaterThanEquals);
-                        window.NextChar();
-                        continue;
-                    }
-                    
-                    yield return Token.FromWindow(window, TokenType.GreaterThan);
-                    
-                    break;
-                }
-                
-                case '<':
-                {
-                    if (window.PeekNext(out var nextChar) && nextChar is '=')
-                    {
-                        yield return Token.FromWindow(window, TokenType.LessThanEquals);
-                        window.NextChar();
-                        continue;
-                    }
-                    
-                    yield return Token.FromWindow(window, TokenType.LessThan);
-                    
-                    break;
-                }
-
                 case '=':
                 {
-                    if (window.PeekNext(out var nextChar) && nextChar is '=')
-                    {
-                        yield return Token.FromWindow(window, TokenType.EqualsEquals);
-                        window.NextChar();
-                        continue;
-                    }
-                    
                     yield return Token.FromWindow(window, TokenType.Equals);
                     
                     break;

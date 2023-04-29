@@ -14,16 +14,6 @@ public enum TokenType
     CloseRoundBracket,
     
     /// <summary>
-    /// {
-    /// </summary>
-    OpenCurlyBracket,
-    
-    /// <summary>
-    /// }
-    /// </summary>
-    CloseCurlyBracket,
-    
-    /// <summary>
     /// abc
     /// </summary>
     Identifier,
@@ -47,31 +37,6 @@ public enum TokenType
     /// =
     /// </summary>
     Equals,
-    
-    /// <summary>
-    /// ==
-    /// </summary>
-    EqualsEquals,
-    
-    /// <summary>
-    /// >
-    /// </summary>
-    GreaterThan,
-    
-    /// <summary>
-    /// >=
-    /// </summary>
-    GreaterThanEquals,
-    
-    /// <summary>
-    /// <
-    /// </summary>
-    LessThan,
-    
-    /// <summary>
-    /// <=
-    /// </summary>
-    LessThanEquals,
     
     /// <summary>
     /// *
