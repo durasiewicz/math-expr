@@ -1,15 +1,32 @@
-﻿using System.Runtime.CompilerServices;
-using MathExpr.Analyzers;
-using MathExpr.Runtime;
+﻿using MathExpr.Runtime;
+using static System.Console;
 
+const string exitCommand = "/q"; 
 
-var expr = """
-    a = -(2 + 2)
-    """;
+WriteLine($"To exit type: {exitCommand}");
 
-var eval = new Evaluator();
-Console.WriteLine(eval.Eval(expr));
-Console.ReadLine();
+var evaluator = new Evaluator();
 
-int a = 0;
-var b = -(1 + 2);
+while (true)
+{
+    var line = ReadLine();
+
+    if (string.IsNullOrEmpty(line))
+    {
+        continue;
+    }
+    
+    if (line?.Trim()?.ToLower() == exitCommand)
+    {
+        break;
+    }
+
+    try
+    {
+        WriteLine(evaluator.Eval(line));
+    }
+    catch (Exception e)
+    {
+        WriteLine(e.Message);
+    }
+}

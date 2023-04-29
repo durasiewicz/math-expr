@@ -23,6 +23,11 @@ public class Evaluator
         {
             var ast = _parser.Parse(tokenCollection);
             result = EvalExpression(ast);
+
+            if (result is string str && str.All(char.IsLetter))
+            {
+                result = _variables[str];
+            }
         }
 
         return result;
