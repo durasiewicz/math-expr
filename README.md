@@ -33,4 +33,9 @@ c = (a + b) * 2
 d = pow(a, sqrt(b))
 ```
 
+Single-line expressions can be separated with semicolon (only last expression result is printed to the console):
 
+```
+a = 2; b = 3
+pow(a, b)
+```
