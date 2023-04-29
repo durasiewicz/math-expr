@@ -3,7 +3,8 @@ using MathExpr.Runtime;
 
 
 var expr = """
-    pow(6,2)
+    a = 2
+    pow(a,3)
     """;
 
 var eval = new Evaluator();

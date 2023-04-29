@@ -2,21 +2,14 @@ namespace MathExpr.Analyzers;
 
 public class Lexer
 {
-    public TokenCollection Lex(string input)
+    public IEnumerable<TokenCollection> Lex(string input)
     {
-        var result = new List<Token>();
         var textWindows = GenerateTextWindows(input).ToArray();
 
         foreach (var textWindow in textWindows)
         {
-            foreach (var token in ScanTextWindow(textWindow))
-            {
-                result.Add(token);
-            }
+            yield return new TokenCollection(ScanTextWindow(textWindow));
         }
-
-        result.Add(new Token(0, 0, TokenType.EndOfCode));
-        return new TokenCollection(result);
     }
 
     private IEnumerable<Token> ScanTextWindow(TextWindow window)
