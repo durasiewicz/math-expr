@@ -8,10 +8,31 @@ public class Evaluator
     private readonly Lexer _lexer = new();
     private readonly Parser _parser = new();
     private readonly Dictionary<string, decimal> _variables = new();
-    private readonly Dictionary<string, Function> _functions = new()
+    private readonly Dictionary<string, IFunction> _functions;
+
+    public Evaluator()
     {
-        ["pow"] = new Pow()
-    };
+        var functions = typeof(Evaluator).Assembly.GetTypes()
+            .Where(q => !q.IsInterface)
+            .Where(q => q.IsClass)
+            .Where(q => q.IsAssignableTo(typeof(IFunction)))
+            .Select(Activator.CreateInstance)
+            .Cast<IFunction>()
+            .ToList();
+
+        var duplicates = functions
+            .GroupBy(q => q.Name.Trim().ToLower())
+            .Where(q => q.Count() > 1)
+            .ToList();
+
+        if (duplicates.Any())
+        {
+            throw new InvalidOperationException(
+                $"Duplicated build-in functions: {string.Join(", ", duplicates.SelectMany(q => q).Select(q => q.Name).Distinct())}");
+        }
+
+        _functions = functions.ToDictionary(q => q.Name.Trim().ToLower(), q => q);
+    }
 
     public object? Eval(string? expression)
     {
@@ -60,7 +81,7 @@ public class Evaluator
 
     private object EvalFunctionCallExpression(FunctionCallExpression functionCallExpression)
     {
-        var name = functionCallExpression.Name?.Trim()?.ToLower();
+        var name = functionCallExpression.Name.Trim().ToLower();
 
         if (string.IsNullOrEmpty(name))
         {
