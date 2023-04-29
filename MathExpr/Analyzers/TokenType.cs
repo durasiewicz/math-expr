@@ -44,19 +44,9 @@ public enum TokenType
     Asterisk,
     
     /// <summary>
-    /// *=
-    /// </summary>
-    AsteriskEquals,
-    
-    /// <summary>
     /// +
     /// </summary>
     Plus,
-    
-    /// <summary>
-    /// PlusEquals
-    /// </summary>
-    PlusEquals,
     
     /// <summary>
     /// -
@@ -64,19 +54,9 @@ public enum TokenType
     Minus,
     
     /// <summary>
-    /// -=
-    /// </summary>
-    MinusEquals,
-    
-    /// <summary>
     /// /
     /// </summary>
     Slash,
-    
-    /// <summary>
-    /// /=
-    /// </summary>
-    SlashEquals,
     
     /// <summary>
     /// End of code (or file)

@@ -39,67 +39,24 @@ public class Lexer
                     break;
                 
                 case '=':
-                {
                     yield return Token.FromWindow(window, TokenType.Equals);
-                    
                     break;
-                }
                 
                 case '+':
-                {
-                    if (window.PeekNext(out var nextChar) && nextChar is '=')
-                    {
-                        yield return Token.FromWindow(window, TokenType.PlusEquals);
-                        window.NextChar();
-                        continue;
-                    }
-                    
                     yield return Token.FromWindow(window, TokenType.Plus);
-                    
                     break;
-                }
                 
                 case '-':
-                {
-                    if (window.PeekNext(out var nextChar) && nextChar is '=')
-                    {
-                        yield return Token.FromWindow(window, TokenType.MinusEquals);
-                        window.NextChar();
-                        continue;
-                    }
-                    
                     yield return Token.FromWindow(window, TokenType.Minus);
-                    
                     break;
-                }
                 
                 case '*':
-                {
-                    if (window.PeekNext(out var nextChar) && nextChar is '=')
-                    {
-                        yield return Token.FromWindow(window, TokenType.AsteriskEquals);
-                        window.NextChar();
-                        continue;
-                    }
-                    
                     yield return Token.FromWindow(window, TokenType.Asterisk);
-                    
                     break;
-                }
                 
                 case '/':
-                {
-                    if (window.PeekNext(out var nextChar) && nextChar is '=')
-                    {
-                        yield return Token.FromWindow(window, TokenType.SlashEquals);
-                        window.NextChar();
-                        continue;
-                    }
-                    
                     yield return Token.FromWindow(window, TokenType.Slash);
-                    
                     break;
-                }
 
                 default:
                 {
