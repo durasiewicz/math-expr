@@ -62,6 +62,18 @@ public class Lexer
                     yield return Token.FromWindow(window, TokenType.Percent);
                     break;
                 
+                case '^':
+                    yield return Token.FromWindow(window, TokenType.Caret);
+                    break;
+                
+                case '|':
+                    yield return Token.FromWindow(window, TokenType.Bar);
+                    break;
+                
+                case '&':
+                    yield return Token.FromWindow(window, TokenType.Ampersand);
+                    break;
+                
                 default:
                 {
                     if (char.IsLetter(window.PeekChar()))

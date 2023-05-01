@@ -39,3 +39,19 @@ Single-line expressions can be separated with semicolon (only last expression re
 a = 2; b = 3
 pow(a, b)
 ```
+
+Bitwise operators are also supported and have lowest precedence:
+
+| Operator | Operation |
+|--------|--------|
+| `&`    | and    |
+| `\|`   |     or |
+| `^` | xor |
+
+```
+a = 1 & 2
+b = 1 * 2 | 1 + 2 * 2
+c = a + 1 ^ b / 2
+```
+
+**But please be aware, that every value is converted to integer (fractional part is lost) before performing bitwise operation.**

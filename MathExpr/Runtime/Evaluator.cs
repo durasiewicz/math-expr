@@ -129,6 +129,9 @@ public class Evaluator
             BinaryExpression.BinaryExpressionType.Multiply => leftValue * rightValue,
             BinaryExpression.BinaryExpressionType.Divide => leftValue / rightValue,
             BinaryExpression.BinaryExpressionType.Remainder => leftValue % rightValue,
+            BinaryExpression.BinaryExpressionType.And => (int)leftValue & (int)rightValue,
+            BinaryExpression.BinaryExpressionType.Or => (int)leftValue | (int)rightValue,
+            BinaryExpression.BinaryExpressionType.Xor => (int)leftValue ^ (int)rightValue,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

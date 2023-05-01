@@ -71,5 +71,20 @@ public enum TokenType
     /// <summary>
     /// %
     /// </summary>
-    Percent
+    Percent,
+    
+    /// <summary>
+    /// ^
+    /// </summary>
+    Caret,
+    
+    /// <summary>
+    /// |
+    /// </summary>
+    Bar,
+    
+    /// <summary>
+    /// &
+    /// </summary>
+    Ampersand
 }

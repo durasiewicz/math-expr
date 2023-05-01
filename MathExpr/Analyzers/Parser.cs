@@ -9,9 +9,33 @@ public class Parser
     public Expression? Parse(TokenCollection tokenCollection)
     {
         _tokenCollection = tokenCollection;
-        return Expression();
+        return BitwiseExpression();
     }
 
+    private Expression? BitwiseExpression()
+    {
+        var result = Expression();
+        
+        if (result != null && _tokenCollection.Current.Type is
+                TokenType.Ampersand or
+                TokenType.Bar or
+                TokenType.Caret)
+        {
+            var tokenType = _tokenCollection.Current.Type;
+            _tokenCollection.MoveNext();
+            var rightNode = BitwiseExpression();
+            result = new BinaryExpression(tokenType switch
+            {
+                TokenType.Ampersand => BinaryExpression.BinaryExpressionType.And,
+                TokenType.Bar => BinaryExpression.BinaryExpressionType.Or,
+                TokenType.Caret => BinaryExpression.BinaryExpressionType.Xor,
+                _ => throw new ArgumentOutOfRangeException()
+            }, result, rightNode);
+        }
+
+        return result;
+    }
+    
     private Expression? Expression()
     {
         var result = Term();
